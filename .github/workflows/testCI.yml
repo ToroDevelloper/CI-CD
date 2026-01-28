@@ -7,7 +7,7 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
-  concurrency:
+concurrency:
     group: "CI-CD-GHPages"
     cancel-in-progress: true
 
@@ -15,13 +15,13 @@ jobs:
   verificar_codigo:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout del repositorio
         uses: actions/checkout@v4
 
-        name: Mostrar archivos (opcional para depurar)
+      - name: Mostrar archivos (opcional para depurar)
         run: ls -R
 
-        name: verificar archivos principales
+      - name: verificar archivos principales
         run: |
           if [ -f index.html ] && [ -f index.css ]; then
             echo "Archivos HTML y CSS encontrados." ¡CI Basico superado!
@@ -33,4 +33,29 @@ jobs:
   desplegar_paguina:
     needs: verificar_codigo
     if: github.ref == 'refs/heads/main' 
-    
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write 
+      
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir artifactos de despliegue
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./'
+
+      - name: Iniciar Despliegue a Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
