@@ -24,7 +24,7 @@ jobs:
       - name: verificar archivos principales
         run: |
           if [ -f index.html ] && [ -f index.css ]; then
-            echo "Archivos HTML y CSS encontrados. ¡CI Basico superado!"
+            echo "Archivos HTML y CSS encontrados." ¡CI Basico superado!
           else
             echo "Error: Faltan archivos index.html o index.css."
             exit 1
@@ -53,10 +53,9 @@ jobs:
       - name: Subir artifactos de despliegue
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./'
 
       - name: Iniciar Despliegue a Pages
         id: deployment
         uses: actions/deploy-pages@v4
         
-        ##
